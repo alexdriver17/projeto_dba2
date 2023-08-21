@@ -1,0 +1,88 @@
+CREATE DATABASE IF NOT EXISTS db_banco
+COLLATE utf8mb4_general_ci
+CHARSET utf8mb4;
+
+USE db_banco;
+
+
+CREATE TABLE IF NOT EXISTS  tb_endereco (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    cep CHAR(8) NOT NULL,
+    numero_residencia CHAR(4) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Cliente_juridico (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    nome_fantasia VARCHAR(255) NOT NULL,
+    razao_social VARCHAR(255) NOT NULL,
+    cnpj CHAR(14) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    status BOOL DEFAULT 1,
+    id_endereco INT NOT NULL,
+     CONSTRAINT fk_id_endereco1 FOREIGN KEY (id_endereco) REFERENCES tb_endereco(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS  Cliente_fisico (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    sobrenome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    dt_nascimento DATE NOT NULL,
+    cpf CHAR(14) NOT NULL,
+    filiacao VARCHAR(255) NOT NULL,
+    status BOOL DEFAULT 1,
+    id_endereco INT NOT NULL,
+    CONSTRAINT fk_id_endereco FOREIGN KEY (id_endereco) REFERENCES tb_endereco(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS  tb_telefone (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    ddd CHAR(3) NOT NULL,
+    numero CHAR(11)
+);
+
+CREATE TABLE IF NOT EXISTS  tb_conta (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    numero CHAR(20) NOT NULL,
+    agencia CHAR(9) NOT NULL,
+    saldo VARCHAR(255) NOT NULL,
+    status CHAR(9) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS  Tipo_transacao (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    
+    descricao VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS  Tipo_conta (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS  Tipo_telefone (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS  tb_transacao (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    conta_saida VARCHAR(255) NOT NULL,
+    conta_destino VARCHAR(255) NOT NULL,
+    valor VARCHAR(255) NOT NULL,
+	id_tipo_transacao VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS  cliente_telefone (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT PRIMARY KEY
+);
+ 
+ALTER TABLE Cliente_fisico ADD CONSTRAINT FK_Cliente_fisico_2
+    FOREIGN KEY (id)
+    REFERENCES Endereco (id);
+ 
+ALTER TABLE Tipo_Telefone ADD CONSTRAINT FK_Tipo_Telefone_2
+    FOREIGN KEY (id)
+    REFERENCES Telefone (id);
